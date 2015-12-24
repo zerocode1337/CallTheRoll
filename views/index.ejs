@@ -1,0 +1,22 @@
+<%- include header%>
+</head>
+<body>
+
+<!--在这里编写你的代码-->
+<h1>hello,world</h1>
+<% if (error) {%>
+    <script type="text/javascript">
+        alert("<%= error%>");
+    </script>
+<% } %>
+<% if (success) {%>
+    <div class="am-alert am-alert-success" style="width:30%; margin:0 auto;" data-am-alert>
+      <button type="button" class="am-close">&times;</button>
+      <p><%= success%></p>
+    </div>
+<% } %>
+<script src="/assets/js/jquery.min.js"></script>
+
+<script src="/assets/js/amazeui.min.js"></script>
+</body>
+</html>

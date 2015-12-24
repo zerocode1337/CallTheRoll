@@ -1,0 +1,94 @@
+<%- include header%>
+<link rel="stylesheet" href="/assets/css/checkInfo.css" media="screen" title="no title" charset="utf-8">
+<link rel="stylesheet" href="/assets/css/definedstyle.css" media="screen" title="no title" charset="utf-8">
+</head>
+<body>
+    <header class="am-topbar am-topbar-inverse" >
+        <h1 class="am-topbar-brand">
+            <a href="/teacher">SDIBT</a>
+        </h1>
+
+        <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#doc-topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
+
+        <div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse">
+            <ul class="am-nav am-nav-pills am-topbar-nav">
+                <li class="am-active"><a href="#">首页</a></li>
+            </ul>
+            <div class="am-topbar-right">
+            <% if(teacher){ %>
+                <ul class="am-nav am-nav-pills am-topbar-nav">
+                    <li class=""><a href="#">欢迎您，<%= teacher.name%></a></li>
+                    <li class=""><a href="/logoutt">注销</a></li>
+                    <!-- 链接触发器， href 属性为目标元素 ID -->
+                    <button class="am-btn am-btn-primary am-topbar-btn am-btn-sm" data-am-offcanvas="{target: '#doc-oc-demo1'}"><span class="am-icon-navicon"></span></button>
+                </ul>
+            <%}else{%>
+                <ul class="am-nav am-nav-pills am-topbar-nav">
+                    <li class=""><a href="/logint">登录</a></li>
+                    <li class=""><a href="/regt">注册</a></li>
+                </ul>
+            <%}%>
+            </div>
+        </div>
+    </header>
+    <% if (error) {%>
+        <script type="text/javascript">
+            alert("<%= error%>");
+        </script>
+    <% } %>
+    <% if (success) {%>
+        <div class="am-alert am-alert-success" style="width:30%; margin:0 auto;" data-am-alert>
+          <button type="button" class="am-close">&times;</button>
+          <p><%= success%></p>
+        </div>
+    <% } %>
+    <!-- 侧边栏内容 -->
+    <div id="doc-oc-demo1" class="am-offcanvas ">
+        <div class="am-offcanvas-bar am-offcanvas-bar-flip">
+            <div class="am-offcanvas-content">
+                <ul class="am-list admin-sidebar-list" id="collapase-nav-1" >
+                    <br><br><br><br><br>
+                    <li  class="am-panel" >
+                        <a  href="/teacher/settings"><i class="am-icon-cog am-margin-left-sm"></i> 个人设置</a>
+                    </li>
+
+                    <li class="am-panel">
+                        <a data-am-collapse="{parent: '#collapase-nav-1', target: '#user-nav'}">
+                            <i class="am-icon-users am-margin-left-sm"></i> 管理班级 <i class="am-icon-angle-right am-fr am-margin-right"></i>
+                        </a>
+                        <ul class="am-list am-collapse admin-sidebar-sub" id="user-nav">
+                            <li><a href="#/userAdd"><i class="am-icon-user am-margin-left-sm"></i> 添加班级 </a></li>
+                            <li><a href="#/userList/0"><i class="am-icon-user am-margin-left-sm"></i> 班级列表 </a></li>
+                        </ul>
+                    </li>
+                    <li  class="am-panel" >
+                        <a data-am-collapse="{parent: '#collapase-nav-1'}" href="#/"><i class="am-icon-bomb am-margin-left-sm"></i> 开始点名</a>
+                    </li>
+                    <li class="am-panel">
+                        <a  href="#/personal"><i class="am-icon-chrome am-margin-left-sm"></i> 查询结果</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="content" style="height:1000px;">
+
+    </div>
+    <footer data-am-widget="footer"
+    class="am-footer am-footer-default"
+    data-am-footer="{  }" style="background:rgba(255, 255, 255, 0)">
+
+    <div class="am-footer-miscs ">
+
+        <p>由 <a href="http://www.crabx.site/" title="zerocode"
+            target="_blank" class="">zerocode</a>
+            提供技术支持</p>
+            <p>CopyRight©2015  crabx.kevin</p>
+        </div>
+    </footer>
+
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/amazeui.min.js"></script>
+    <script src="/assets/js/checkInfo.js"></script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<%- include header%>
+<link rel="stylesheet" href="/assets/css/checkInfo.css" media="screen" title="no title" charset="utf-8">
+</head>
+<body class="reg-log">
+    <% if (error) {%>
+        <script type="text/javascript">
+            alert("<%= error%>");
+        </script>
+    <% } %>
+    <% if (success) {%>
+        <div class="am-alert am-alert-success" style="width:30%; margin:0 auto;" data-am-alert>
+          <button type="button" class="am-close">&times;</button>
+          <p><%= success%></p>
+        </div>
+    <% } %>
+    <div class="register-teacher">
+        <form  class="am-form" id="form-with-tooltip" method="post">
+            <fieldset>
+                <legend>教师登陆</legend>
+                <div class="regform ">
+                    <div class="am-form-group am-input-group">
+                        <span class="am-input-group-label"><i class="am-icon-user am-icon-fw"></i></span>
+                        <input type="text" class="am-form-field am-radius" name="name" id="doc-vld-name-2-0" minlength="5"
+                        placeholder="输入用户名（至少 5 个字符）" required/>
+                    </div>
+                    <div class="am-form-group am-input-group">
+                        <span class="am-input-group-label"><i class="am-icon-lock am-icon-fw"></i></span>
+                        <input type="password" class="am-form-field am-radius" name="password" id="doc-vld-pwd-1-0" minlength="6" maxlength="15" placeholder="请输入密码（6-15位）" required data-foolish-msg="密码不符合规则！"/>
+                    </div>
+                    <div>
+                        <hr>
+                        <a href="/regt">没有账号？点此注册。</a>
+                        <br><br>
+                    </div>
+                    <button class="am-btn am-btn-secondary" type="submit">登录</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <footer data-am-widget="footer"
+            class="am-footer am-footer-default"
+             data-am-footer="{  }" style="background:rgba(255, 255, 255, 0)">
+
+      <div class="am-footer-miscs ">
+
+            <p>由 <a href="http://www.crabx.site/" title="zerocode"
+                                                  target="_blank" class="">zerocode</a>
+              提供技术支持</p>
+          <p>CopyRight©2015  crabx.kevin</p>
+      </div>
+    </footer>
+
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/amazeui.min.js"></script>
+    <script src="/assets/js/checkInfo.js"></script>
+</body>
+</html>
