@@ -1,3 +1,7 @@
 #collapase-nav-1 li{
     background-color: #333;
 }
+.content-setting{
+    background: rgba(242, 242, 242, 1);
+    border-radius: 15px;
+}

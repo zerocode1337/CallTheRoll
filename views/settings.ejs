@@ -1,6 +1,9 @@
 <%- include header%>
 <link rel="stylesheet" href="/assets/css/checkInfo.css" media="screen" title="no title" charset="utf-8">
 <link rel="stylesheet" href="/assets/css/definedstyle.css" media="screen" title="no title" charset="utf-8">
+<style media="screen">
+
+</style>
 </head>
 <body>
     <header class="am-topbar am-topbar-inverse" >
@@ -71,8 +74,58 @@
             </div>
         </div>
     </div>
-    <div class="content" style="height:1000px;">
 
+    <div class="am-g " >
+        <div class="am-u-md-6 am-u-md-centered content-setting">
+            <div data-am-tabs class="am-tabs">
+                <br>
+                <h1 style="text-align:center;"><i class="am-icon-cog am-margin-left-sm" style="color:rgb(133, 96, 140)"></i>&nbsp; 设置</h1><br>
+                <ul class="am-tabs-nav am-nav am-nav-tabs">
+                    <li class="am-active"><a href="[data-tab-panel-0]">基础设置</a></li>
+                    <li class=""><a href="[data-tab-panel-1]">修改密码</a></li>
+                    <!-- <li class=""><a href="[data-tab-panel-2]">歌唱</a></li> -->
+                </ul>
+                <div class="am-tabs-bd" style="overflow:hidden">
+                    <div data-tab-panel-0 class="am-tab-panel am-active">
+                        <form id="settings"  method="post">
+                            <div class="control-group" style="margin-left:25%; text-align:left"><br><br><br>
+                                <div class="am-form-group">
+                                    <label for="doc-ds-ipt-1" >用户名</label>
+                                    <input type="text" id="doc-ds-ipt-1" class="am-form-field " style="width:60%; border-radius:5px;" value="<%= teacher.name%>" disabled placeholder="">
+                                </div>
+                                <label for="doc-ds-ipt-2" id="labelEmail" >电子邮箱</label><br>
+                                <input type="text" id="doc-ds-ipt-2" class="am-form-field " maxlength="40" style="width:50%; border-radius:5px; display:inline-block" value="<%= teacher.email%>" disabled="true"/>
+                                <button type="button" class="am-btn am-btn-secondary am-radius" onclick="setEm()">修改</button>
+                                <div class="am-form-group">
+                                    <label for="doc-ds-ipt-3" >姓名</label>
+                                    <input type="text" id="doc-ds-ipt-3" class="am-form-field " style="width:60%; border-radius:5px; disabled;" placeholder="请输入真实姓名">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div data-tab-panel-1 class="am-tab-panel ">
+                        <!-- <form id="settings"  method="post"> -->
+                            <div class="control-group" style="margin-left:25%; text-align:left"><br><br><br>
+                                <div class="am-form-group">
+                                    <label for="doc-ds-ipt-4" >当前密码</label>
+                                    <input type="password" id="doc-ds-ipt-4" class="am-form-field " form="settings" name="nowPass" style="width:60%; border-radius:5px;" placeholder="">
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="doc-ds-ipt-5">新密码</label><br>
+                                    <input type="password" id="doc-ds-ipt-5" class="am-form-field " form="settings" name="newPass" maxlength="15" minlength="6" style="width: 60%; border-radius:5px;" placeholder="请输入密码(6-15)">
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="doc-ds-ipt-6" >确认密码</label>
+                                    <input type="password" id="doc-ds-ipt-6" class="am-form-field " form="settings" name="passAgain"  maxlength="15" minlength="6" style="width:60%; border-radius:5px; disabled;" placeholder="请再次输入密码(6-15)">
+                                </div>
+                            </div>
+                        <!-- </form> -->
+                    </div>
+
+                    <button class="am-btn am-btn-secondary am-radius am-btn-lg" style="margin-left:26%;margin-bottom:5%" onclick="saveMethod()">保存</button>
+                </div>
+            </div>
+        </div>
     </div>
     <footer data-am-widget="footer"
     class="am-footer am-footer-default"
@@ -86,7 +139,32 @@
             <p>CopyRight©2015  crabx.kevin</p>
         </div>
     </footer>
-
+    <script type="text/javascript">
+    function saveMethod(){
+        var forms = document.getElementById("settings");
+        var NewPass = forms.newPass.value;
+        var PassAgain = forms.passAgain.value;
+        var NowPass = forms.nowPass.value;
+        if(NewPass != "" || PassAgain != ""){
+            if(NewPass != PassAgain){
+                alert("两次密码不一致!");
+                return false;
+            }
+            if(NowPass == ""){
+                alert("当前密码不能为空!");
+                return false;
+            }
+        }else if(NowPass != ""){
+            alert("新密码不能为空!");
+            return false;
+        }
+        forms.submit();
+    }
+    function setEm(){
+        var Email = document.getElementById('labelEmail').control;
+        Email.disabled = false;
+    }
+    </script>
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/amazeui.min.js"></script>
     <script src="/assets/js/checkInfo.js"></script>
