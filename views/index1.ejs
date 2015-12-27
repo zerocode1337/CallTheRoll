@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="">
+    <title>SDIBT学生点名系统</title>
+    <link rel="stylesheet" href="/assets/css/main.css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+      <% if (error) {%>
+      <script type="text/javascript">
+          alert("<%= error%>");
+      </script>
+      <% } %>
+      <% if (success) {%>
+          <script type="text/javascript">
+              alert("<%= success%>");
+          </script>
+      <% } %>
+    <div class="banner">
+      <div class="container">
+        <div class="banner-main">
+          <h1>山东工商学院上课点名系统</h1>
+          <p>Shandong Business and Technology University Required Attendance System </p>
+          <div id="a-in">
+              <a href="/logins">学生登入</a>
+              <a href="/logint">教师登入</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

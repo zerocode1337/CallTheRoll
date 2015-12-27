@@ -92,7 +92,6 @@ Teacher.update = function(teacher,callback){
                 'email': teacher.email,
                 'password': teacher.password,
                 'realName': teacher.realName,
-                'majors': teacher.majors
             }},function(err){
                 pool.release(mongodb);
                 if (err) {

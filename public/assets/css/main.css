@@ -1,0 +1,55 @@
+*{margin: 0;padding: 0;}
+html, body{
+    font-family: 'SourceSansPro-Regular';
+    font-size: 100%;
+    background:#fff;
+}
+a {
+    text-decoration: none;
+}
+a:hover {
+    transition: 0.5s all;
+    -webkit-transition: 0.5s all;
+    -moz-transition: 0.5s all;
+    -o-transition: 0.5s all;
+}
+.banner{
+    background:url(/assets/i/beiying60.png)no-repeat center;
+    min-height:700px;
+    background-size: cover;
+}
+.banner-main{
+    text-align: center;
+    padding: 15em 0em 0em 0em;
+}
+.banner-main h1{
+    font-size:4em;
+    font-weight: 700;
+    color: #fff;
+    font-family:
+}
+.banner-main p{
+    /*padding-top: 70px;*/
+    font-size:1.3em;
+    color: #fff;
+    line-height: 1.8em;
+    width: 50%;
+    margin: 0 auto;
+}
+/*#a-in{
+    padding-top: 100px;
+}*/
+.banner-main a{
+    font-size: 1em;
+    color: #fff;
+    display: block;
+    padding: 0.5em 0em 0.5em 0em;
+    width: 10%;
+    margin: 2em auto 0em;
+    background: #8fbe00;
+    border-radius: 5px;
+}
+.banner-main a:hover{
+    text-decoration:none;
+    background: #00a8b6;
+}
