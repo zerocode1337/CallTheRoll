@@ -1,25 +1,35 @@
-<%- include header%>
-</head>
-<body>
-    <!--在这里编写你的代码-->
-    <h1>hello,world</h1>
-    <% if (error) {%>
-    <script type="text/javascript">
-        alert("<%= error%>");
-    </script>
-    <% } %>
-    <% if (success) {%>
-    <div class="am-alert am-alert-success" style="width:30%; margin:0 auto;" data-am-alert>
-        <button type="button" class="am-close">&times;</button>
-        <p><%= success%></p>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="">
+    <title>SDIBT学生点名系统</title>
+    <link rel="stylesheet" href="/assets/css/main.css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+      <% if (error) {%>
+      <script type="text/javascript">
+          alert("<%= error%>");
+      </script>
+      <% } %>
+      <% if (success) {%>
+          <script type="text/javascript">
+              alert("<%= success%>");
+          </script>
+      <% } %>
+    <div class="banner">
+      <div class="container">
+        <div class="banner-main">
+          <h1>山东工商学院上课点名系统</h1>
+          <p>Shandong Business and Technology University Required Attendance System </p>
+          <div id="a-in">
+              <a href="/logins">学生登入</a>
+              <a href="/logint">教师登入</a>
+          </div>
+        </div>
+      </div>
     </div>
-    <% } %>
-    <div class="">
-        <h3><a href="/logint">教师登陆</a></h3>
-        <h3><a href="/regt">教师注册</a></h3>
-        <h3><a href="/logins">学生登陆</a></h3>
-        <h3><a href="/regs">学生注册</a></h3>
-    </div>
-
-</body>
+  </body>
 </html>

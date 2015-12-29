@@ -32,6 +32,11 @@
                         <input type="password" class="am-form-field am-radius" name="password" id="doc-vld-pwd-1-0" minlength="6" maxlength="15" placeholder="请输入密码（6-15位）" required data-foolish-msg="密码不符合规则！"/>
                     </div>
                     <div class="am-form-group am-input-group">
+                        <span class="am-input-group-label"><i class="am-icon-inbox am-icon-fw"></i></span>
+                        <input type="text" class="am-form-field am-radius" name="code" id="doc-vld-code-1-0"  maxlength="20"
+                        placeholder="输入邀请码" required/>
+                    </div>
+                    <div class="am-form-group am-input-group">
                         <input type="text"  class="am-form-field am-radius" max-width="6" style="display:inline-block; width:70%;" name="verify" id="inputVerify3" placeholder="请输入验证码" required onblur="checkVerify()">
                         <img src="/getCaptcha" style="display:inline-block" alt="" onclick="this.src='/getCaptcha?'+new Date().getTime()"/>
                     </div>

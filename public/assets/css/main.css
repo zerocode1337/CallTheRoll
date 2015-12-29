@@ -2,7 +2,10 @@
 html, body{
     font-family: 'SourceSansPro-Regular';
     font-size: 100%;
-    background:#fff;
+    background:url(/assets/i/beiying60.png)no-repeat center;
+    background-size: cover;
+    min-height: 1000px;   
+    /*background:#fff;*/
 }
 a {
     text-decoration: none;
@@ -14,9 +17,9 @@ a:hover {
     -o-transition: 0.5s all;
 }
 .banner{
-    background:url(/assets/i/beiying60.png)no-repeat center;
-    min-height:700px;
-    background-size: cover;
+    /*background:url(/assets/i/beiying60.png)no-repeat center;*/
+    /*min-height:800px;*/
+    /*background-size: cover;*/
 }
 .banner-main{
     text-align: center;

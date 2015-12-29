@@ -23,7 +23,7 @@
                     <li class=""><a href="#">欢迎您，<%= teacher.name%></a></li>
                     <li class=""><a href="/logoutt">注销</a></li>
                     <!-- 链接触发器， href 属性为目标元素 ID -->
-                    <li><button class="am-btn am-btn-primary am-topbar-btn am-btn-sm" data-am-offcanvas="{target: '#doc-oc-demo1'}"><span class="am-icon-navicon"></span></button></li>
+                    <li><button class="am-btn am-btn-primary am-topbar-btn am-btn-sm" data-am-offcanvas="{target: '#doc-oc-demo1' }"><span class="am-icon-navicon"></span></button></li>
                 </ul>
             <%}else{%>
                 <ul class="am-nav am-nav-pills am-topbar-nav">
@@ -45,6 +45,9 @@
           <p><%= success%></p>
         </div>
     <% } %>
+    <div id="note-info">
+
+    </div>
     <!-- 侧边栏内容 -->
     <div id="doc-oc-demo1" class="am-offcanvas ">
         <div class="am-offcanvas-bar am-offcanvas-bar-flip">
@@ -91,11 +94,11 @@
                             <div class="control-group" style="margin-left:25%; text-align:left">
                                 <div class="am-form-group">
                                     <label for="doc-ds-ipt-7" >专业班级</label>
-                                    <input type="text" id="doc-ds-ipt-7" class="am-form-field " name="major" style="width:60%; border-radius:5px;" pattern="[\u4e00-\u9fa5]{2}\-\d{3}" placeholder="如：计科-122" required="true">
+                                    <input type="text" id="doc-ds-ipt-7" class="am-form-field input_major" name="major" style="width:60%; border-radius:5px;"  placeholder="如：计科-122" required="true">
                                 </div>
                                 <div class="am-form-group">
                                     <label for="doc-ds-ipt-8" id="labelEmail" >所在学院</label><br>
-                                    <input type="text" id="doc-ds-ipt-8" class="am-form-field"  name="faculty" list="note-faculty" maxlength="40" style="width:60%; border-radius:5px;" required="true"/>
+                                    <input type="text" id="doc-ds-ipt-8" class="am-form-field input_faculty"  name="faculty" list="note-faculty" maxlength="40" style="width:60%; border-radius:5px;" required="true"/>
                                     <datalist id="note-faculty" style="display:none;">
                                         <option value="计算机科学与技术学院">计算机科学与技术学院</option>
                                         <option value="管理科学与工程学院">管理科学与工程学院</option>
@@ -145,7 +148,6 @@
     data-am-footer="{  }" style="background:rgba(255, 255, 255, 0)">
 
     <div class="am-footer-miscs ">
-
         <p>由 <a href="http://www.crabx.site/" title="zerocode"
             target="_blank" class="">zerocode</a>
             提供技术支持</p>
@@ -153,8 +155,26 @@
         </div>
     </footer>
     <script type="text/javascript">
-        function next(){
 
+
+        function next(){
+            var major = document.getElementsByClassName('input_major');
+            var pattern=/^[\u4e00-\u9fa5]{2}\-[0-9]{3}$/;
+            if(!pattern.test(major[0].value)){
+                var insertText = "<div class=\"am-alert am-alert-danger\" daata-am-alert><button type=\"button\" class=\"am-close\">&times;</button><p>专业班级不符合填写规则，请重新填写！</p></div>";
+                document.getElementById('note-info').innerHTML = document.getElementById('note-info').innerHTML + insertText;
+                return false;
+            }else{
+                document.getElementById('note-info').innerHTML = null;
+            }
+            var faculty = document.getElementsByClassName('input_faculty');
+            if(! faculty){
+                var insertText = "<div class=\"am-alert am-alert-danger\" daata-am-alert><button type=\"button\" class=\"am-close\">&times;</button><p>所在院校不能为空！</p></div>";
+                document.getElementById('note-info').innerHTML = document.getElementById('note-info').innerHTML + insertText;
+                return false;
+            }else{
+                document.getElementById('note-info').innerHTML = null;
+            }
             var step0 = document.getElementById("step0");
             step0.setAttribute('class','am-tab-panel');
             var step1 = document.getElementById("step1");
@@ -174,10 +194,10 @@
             var listep0 = document.getElementById("listep0");
             listep0.setAttribute('class','am-active');
         }
-        function save(){
-            var forms = document.getElementById("addclass");
-            forms.submit();
-        }
+        // function save(){
+        //     var forms = document.getElementById("addclass");
+        //     forms.submit();
+        // }
     </script>
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/amazeui.min.js"></script>

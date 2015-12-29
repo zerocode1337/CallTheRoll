@@ -6,14 +6,14 @@ var ccap = require('ccap');
 var crypto = require('crypto');
 var fs = require('fs');
 var Teacher = require('../models/teachers.js');
-var Post = require('../models/post.js');
+var Course = require('../models/course.js');
 var Comment = require('../models/comment.js');
 var passport = require('passport');
 var formidable = require("formidable");
 
 module.exports = function(app){
     app.get('/', function(req,res,next){
-        res.render('index1',{
+        res.render('index',{
             title: 'SDIBT－点名系统',
             success: req.flash('success').toString(),
             error: req.flash('error').toString()
@@ -22,7 +22,7 @@ module.exports = function(app){
     app.get('/regt', checkNotLogin);
     app.get('/regt', function(req,res,next){
         res.render('regTeacher', {
-            user: req.session.user,
+            user: req.session.teacher,
             title: '教师注册',
             success: req.flash('success').toString(),
             error: req.flash('error').toString()
@@ -32,9 +32,14 @@ module.exports = function(app){
     app.post('/regt', function(req,res,next){
         var name = req.body.name
             ,email = req.body.email
+            ,code = req.body.code
             ,verify = req.body.verify.toUpperCase();
         if(verify != req.session.txt){
             req.flash('error',"验证码不正确!");
+            return res.redirect('back');
+        }
+        if(code != 'csbt34.ydhl12s'){
+            req.flash('error','邀请码不对哦！');
             return res.redirect('back');
         }
         var md5 = crypto.createHash('md5');
@@ -167,11 +172,51 @@ module.exports = function(app){
         var major = req.body.major;
         var faculty = req.body.faculty;
         var courseName = req.body.courseName;
-        var courseTime = req.body.courseTime;
-        console.log(major + " " + faculty + " " + courseName + " " + courseTime);
+        var coursePeriod = req.body.courseTime;
+        var newCourse = new Course({
+            name: courseName,
+            period: coursePeriod,
+            teacher: req.session.teacher.name,
+            dept: faculty,
+            major: major
+        });
+        newCourse.save(function(err){
+            if(err){
+                req.flash('error',err);
+                return res.redirect('back');
+            }
+            req.flash('success', '添加成功！');
+            res.redirect('/teacher/classlist');
+        });
     });
-
-
+    app.get('/teacher/classlist', checkLogin);
+    app.get('/teacher/classlist' , function(req,res,next){
+        Course.getAll(req.session.teacher.name, function(err,docs){
+            if (err) {
+                docs = [];
+                req.flash('error',err);
+                return res.redirect('/');
+            }
+            res.render('classlist', {
+                title: '班级列表',
+                classes: docs,
+                teacher: req.session.teacher,
+                success: req.flash('success').toString(),
+                error: req.flash('error').toString()
+            });
+        });
+    });
+    app.get('/teacher/classlist/remove/:id', checkLogin);
+    app.get('/teacher/classlist/remove/:id', function(req,res,next){
+        Course.remove(req.params.id, function(err){
+            if (err) {
+                req.flash('error',err);
+                res.redirect('back');
+            }
+            req.flash('success','删除成功！');
+            res.redirect('/teacher/classlist');
+        });
+    });
     app.get('/getCaptcha', function(req,res,next){
         //设置验证码样式
         var captcha = ccap({

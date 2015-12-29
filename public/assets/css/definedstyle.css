@@ -5,3 +5,7 @@
     background: rgba(242, 242, 242, 1);
     border-radius: 15px;
 }
+.classlist-info{
+    width:60%;
+    margin:100px auto;
+}
