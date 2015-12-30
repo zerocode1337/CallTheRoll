@@ -16,33 +16,38 @@ var pool = poolModule.Pool({
     idleTimeoutMillis: 30000,
     log: true
 });
-function Teacher(teacher) {
-    this.name = teacher.name
-   ,this.email = teacher.email
-   ,this.realName = teacher.realName
-   ,this.password = teacher.password
+function Student(student) {
+    this.name = student.name
+   ,this.email = student.email
+   ,this.realName = student.realName
+   ,this.password = student.password
+   ,this.no_id = student.no_id
+   ,this.major = student.major
+   ,this.dept = student.dept
 };
 
-module.exports = Teacher;
+module.exports = Student;
 
-Teacher.prototype.save = function(callback) {
-    var teacher = {
+Student.prototype.save = function(callback) {
+    var student= {
         name: this.name,
         password: this.password,
         email: this.email,
         realName: this.realName,
-        majors: []
+        no_id: this.no_id,
+        majors:this.major,
+        dept: this.dept
     };
     pool.acquire(function(err,mongodb){
         if(err){
             return callback(err);
         }
-        mongodb.collection('teacher', function(err,collection){
+        mongodb.collection('student', function(err,collection){
             if (err) {
                 pool.release(mongodb);
                 return callback(err);
             }
-            collection.insert(teacher,{
+            collection.insert(student,{
                 safe: true
             }, function(err,user){
                 pool.release(mongodb);
@@ -54,12 +59,12 @@ Teacher.prototype.save = function(callback) {
         });
     });
 };
-Teacher.get = function(name,callback){
+Student.get = function(name,callback){
     pool.acquire(function(err,mongodb){
         if (err) {
             return callback(err);
         }
-        mongodb.collection('teacher', function(err,collection){
+        mongodb.collection('student', function(err,collection){
             if(err){
                 pool.release(mongodb);
                 return callback(err);
@@ -76,22 +81,25 @@ Teacher.get = function(name,callback){
         });
     });
 };
-Teacher.update = function(teacher,callback){
+Student.update = function(student,callback){
     pool.acquire(function(err,mongodb){
         if (err) {
             return callback(err);
         }
-        mongodb.collection('teacher', function(err,collection){
+        mongodb.collection('student', function(err,collection){
             if(err){
                 pool.release(mongodb);
                 return callback(err);
             }
             collection.update({
-                'name': teacher.name
+                'name': student.name
             },{$set:{
-                'email': teacher.email,
-                'password': teacher.password,
-                'realName': teacher.realName,
+                'email': student.email,
+                'password': student.password,
+                'realName': stduent.realName,
+                'no_id': student.no_id,
+                'major': student.major,
+                'dept': student.dept
             }},function(err){
                 pool.release(mongodb);
                 if (err) {

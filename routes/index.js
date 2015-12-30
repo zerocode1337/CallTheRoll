@@ -7,6 +7,7 @@ var crypto = require('crypto');
 var fs = require('fs');
 var Teacher = require('../models/teachers.js');
 var Course = require('../models/course.js');
+var Student = require('../models/student.js');
 var Comment = require('../models/comment.js');
 var passport = require('passport');
 var formidable = require("formidable");
@@ -71,6 +72,54 @@ module.exports = function(app){
             });
         });
     });
+    app.get('/regs', checkNotLoginStudent);
+    app.get('/regs', function(req,res,next){
+        res.render('regStudent', {
+            user: req.session.student,
+            title: '学生注册',
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString()
+        });
+    });
+    app.post('/regs', function(req,res,next){
+        var name = req.body.name
+            ,email = req.body.email
+            ,verify = req.body.verify.toUpperCase();
+        if(verify != req.session.txt){
+             req.flash('error','验证码不正确！');
+             return res.redirect('back');
+        }
+        var md5 = crypto.createHash('md5');
+        var password = md5.update(req.body.password).digest('hex');
+        var newStudent = new Student({
+            name: name,
+            email: email,
+            realName: null,
+            password: password,
+            no_id: null,
+            major: null,
+            dept: null
+        });
+        Student.get(newStudent.name, function(err,user){
+            if(err){
+                req.flash('error',err);
+                return res.redirect('/');
+            }
+            if(user){
+                 req.flash('error','The user repeat!');
+                 return res.redirect('back');
+            }
+            newStudent.save(function(err,user){
+                if (err) {
+                    req.flash('error',err);
+                    return res.redirect('back');
+                }
+                req.session.student = user.ops[0];
+                req.flash('success', 'register success!');
+                res.redirect('/student');
+            });
+        });
+    });
     app.get('/logint', function(req,res,next){
         if(req.session.teacher){
             req.flash('error','已登录');
@@ -104,16 +153,55 @@ module.exports = function(app){
             res.redirect('/teacher');
         });
     });
+    app.get('/logins', checkNotLoginStudent);
+    app.get('/logins', function(req,res,next){
+        res.render('loginStudent',{
+            title: '学生登陆',
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString()
+        });
+    });
+    app.post('/logins', function(req,res,next){
+        var md5 = crypto.createHash('md5');
+        var password = md5.update(req.body.password).digest('hex');
+        Student.get(req.body.name, function(err,user){
+            if (err) {
+                req.flash('error',err);
+                return res.direct('/');
+            }
+            if((!user) || (user.password != password)){
+                req.flash('error','用户名或密码错误！');
+                return res.redirect('/logins');
+            }
+            req.session.student = user;
+            req.flash('success','登陆成功！');
+            res.redirect('/student');
+        });
+    });
     app.get('/logoutt', checkLogin);
     app.get('/logoutt' ,function(req,res,next){
         req.session.teacher = null;
         req.flash('success','登出成功!');
         res.redirect('/');
     });
+    app.get('/logouts', checkLoginStudent);
+    app.get('/logouts', function(req,res,next){
+         req.session.student = null;
+         req.flash('success','登出成功！');
+         res.redirect('/');
+    });
     app.get('/teacher', function(req,res,next){
         res.render('teacher', {
             title: '教师中心',
             teacher: req.session.teacher,
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString()
+        });
+    });
+    app.get('/student', function(req,res,next){
+        res.render('student',{
+            title: '学生中心',
+            student: req.session.student,
             success: req.flash('success').toString(),
             error: req.flash('error').toString()
         });
@@ -790,6 +878,20 @@ res.redirect('back');
         if(req.session.teacher){
             req.flash('error','已登录');
             res.redirect('/');
+        }
+        next();
+    }
+    function checkNotLoginStudent(req,res,next){
+        if(req.session.student){
+            req.flash('error','已登录');
+            res.redirect('/student');
+        }
+        next();
+    }
+    function checkLoginStudent(req,res,next){
+        if (!req.session.student) {
+            req.flash('error','未登录！');
+            return res.redirect('/');
         }
         next();
     }
