@@ -23,6 +23,7 @@ function Course(course) {
     this.course_teacher = course.teacher;
     this.course_dept = course.dept;
     this.major = course.major;
+    this.course_password = course.coursePassword;
 }
 
 module.exports = Course;
@@ -44,7 +45,9 @@ Course.prototype.save = function(callback) {
         course_teacher: this.course_teacher,
         course_dept: this.course_dept,
         course_major: this.major,
-        course_time: time
+        course_time: time,
+        course_password: this.course_password,
+        course_students: []
     };
     console.log(course);
     pool.acquire(function(err,mongodb){

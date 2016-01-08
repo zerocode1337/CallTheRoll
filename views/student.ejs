@@ -51,11 +51,16 @@
                     <li  class="am-panel" >
                         <a  href="/student/settings"><i class="am-icon-cog am-margin-left-sm"></i> 个人设置</a>
                     </li>
-
-                    <li  class="am-panel" >
-                        <a  href="/student/selectCourse"><i class="am-icon-plus-square am-margin-left-sm"></i> 选择课程</a>
+                    <li class="am-panel">
+                        <a data-am-collapse="{parent: '#collapase-nav-1', target: '#user-nav'}">
+                            <i class="am-icon-users am-margin-left-sm"></i> 课程管理 <i class="am-icon-angle-right am-fr am-margin-right"></i>
+                        </a>
+                        <ul class="am-list am-collapse admin-sidebar-sub" id="user-nav">
+                            <li><a href="/student/selectCourse"><i class="am-icon-user am-margin-left-sm"></i> 添加课程 </a></li>
+                            <li><a href="/student/courseList"><i class="am-icon-user am-margin-left-sm"></i> 查看课程 </a></li>
+                        </ul>
                     </li>
-
+                
                     <li class="am-panel">
                         <a  href="/student/search"><i class="am-icon-chrome am-margin-left-sm"></i> 查询结果</a>
                     </li>

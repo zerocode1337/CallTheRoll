@@ -24,6 +24,7 @@ function Student(student) {
    ,this.no_id = student.no_id
    ,this.major = student.major
    ,this.dept = student.dept
+   ,this.photo = null;
 };
 
 module.exports = Student;
@@ -36,7 +37,8 @@ Student.prototype.save = function(callback) {
         realName: this.realName,
         no_id: this.no_id,
         majors:this.major,
-        dept: this.dept
+        dept: this.dept,
+        photo: this.photo
     };
     pool.acquire(function(err,mongodb){
         if(err){
@@ -88,6 +90,7 @@ Student.update = function(student,callback){
         }
         mongodb.collection('student', function(err,collection){
             if(err){
+                console.log(err.toString());
                 pool.release(mongodb);
                 return callback(err);
             }
@@ -96,9 +99,10 @@ Student.update = function(student,callback){
             },{$set:{
                 'email': student.email,
                 'password': student.password,
-                'realName': stduent.realName,
+                'realName': student.realName,
                 'no_id': student.no_id,
-                'major': student.major,
+                'majors': student.major,
+                'photo': student.photo,
                 'dept': student.dept
             }},function(err){
                 pool.release(mongodb);

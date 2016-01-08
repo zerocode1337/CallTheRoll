@@ -2,10 +2,33 @@
     background-color: #333;
 }
 .content-setting{
-    background: rgba(242, 242, 242, 1);
+    background: rgba(242, 242, 242, 0.6);
     border-radius: 15px;
 }
 .classlist-info{
     width:60%;
     margin:100px auto;
+}
+#aPhotoImg{
+    display: inline-block;
+    width: 100px;
+    height: 40px;
+    position: relative;
+    left:5%;
+    background-color: rgb(217, 217, 217);
+    overflow: hidden;
+    font-size: 1.5em;
+    text-align: center;
+    border-radius: 15px;
+}
+#aPhotoImg:hover{
+    background: rgb(154, 214, 136);
+}
+#photoImg{
+    position: absolute;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    display:inline-block;
 }

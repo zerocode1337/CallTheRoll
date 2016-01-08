@@ -215,6 +215,15 @@ module.exports = function(app){
             error: req.flash('error').toString()
         });
     });
+    app.get('/student/settings', checkLoginStudent);
+    app.get('/student/settings', function(req,res,next){
+        res.render('studentSettings',{
+            title: '个人设置',
+            student: req.session.student,
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString()
+        });
+    });
     app.post('/teacher/settings', function(req,res,next){
         var settingEmail = (req.body.settingEmail)||(req.session.teacher.email) ;
         var settingRealname = req.body.settingRealname;
@@ -244,6 +253,46 @@ module.exports = function(app){
             }
             req.session.teacher = newTeacher;
             req.flash('success','修改成功！');
+            return res.redirect('/teacher');
+        });
+    });
+    app.post('/student/settings', function(req,res,next){
+        var settingEmail = (req.body.settingEmail)||(req.session.student.email) ;
+        var settingRealname = req.body.settingRealname;
+        var settingDept = req.body.settingDept;
+        var settingMajor = req.body.settingMajor;
+        var settingNo = req.body.settingnoId;
+        var settingPhoto = req.body.settingTempPhoto;
+        if(req.body.nowPass){
+            var nowPasshash = crypto.createHash('md5').update(req.body.nowPass).digest('hex');
+        }else{
+            var nowPasshash = req.session.student.password;
+        }
+        if (req.body.newPass){
+            var newPasshash = crypto.createHash('md5').update(req.body.newPass).digest('hex');
+        }else{
+            var newPasshash = req.session.student.password;
+        }
+        if (nowPasshash != req.session.student.password) {
+            req.flash('error',"当前密码不正确！");
+            return res.redirect('back');
+        }
+        var newStudent = new Object();
+        newStudent.name = req.session.student.name;
+        newStudent.realName = settingRealname;
+        newStudent.password = newPasshash;
+        newStudent.email = settingEmail;
+        newStudent.no_id = settingNo;
+        newStudent.major = settingMajor;
+        newStudent.dept = settingDept;
+        newStudent.photo = settingPhoto;
+        Student.update(newStudent, function(err){
+            if (err) {
+                req.flash('error',err);
+                return res.redirect('back');
+            }
+            req.session.student = newStudent;
+            req.flash('success','修改成功！');
             res.redirect('back');
         });
     });
@@ -261,11 +310,13 @@ module.exports = function(app){
         var faculty = req.body.faculty;
         var courseName = req.body.courseName;
         var coursePeriod = req.body.courseTime;
+        var coursePassword = req.body.coursePassword;
         var newCourse = new Course({
             name: courseName,
             period: coursePeriod,
-            teacher: req.session.teacher.name,
+            teacher: req.session.teacher.realName,
             dept: faculty,
+            coursePassword: coursePassword,
             major: major
         });
         newCourse.save(function(err){
@@ -279,12 +330,13 @@ module.exports = function(app){
     });
     app.get('/teacher/classlist', checkLogin);
     app.get('/teacher/classlist' , function(req,res,next){
-        Course.getAll(req.session.teacher.name, function(err,docs){
+        Course.getAll(req.session.teacher.realName, function(err,docs){
             if (err) {
                 docs = [];
                 req.flash('error',err);
                 return res.redirect('/');
             }
+            console.log(docs);
             res.render('classlist', {
                 title: '班级列表',
                 classes: docs,
@@ -558,8 +610,6 @@ module.exports = function(app){
     app.get('/upload', function(req,res,next){
         res.render('upload',{
             title: '文件上传',
-            user: req.session.user,
-            photo:req.session.photo,
             success: req.flash('success').toString(),
             error: req.flash('error').toString()
         });

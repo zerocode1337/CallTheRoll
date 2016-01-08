@@ -55,6 +55,9 @@ app.use(session({
 
 app.use(multer({
 	dest: './public/files/photos',
+    limits: {
+         fileSize: 1000000
+    },
 	rename: function(fieldname,filename){
 		return filename;
 	}

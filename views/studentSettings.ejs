@@ -1,0 +1,243 @@
+<%- include header%>
+<link rel="stylesheet" href="/assets/css/checkInfo.css" media="screen" title="no title" charset="utf-8">
+<link rel="stylesheet" href="/assets/css/definedstyle.css" media="screen" title="no title" charset="utf-8">
+<style media="screen">
+
+</style>
+</head>
+<body>
+    <header class="am-topbar am-topbar-inverse" >
+        <h1 class="am-topbar-brand">
+            <a href="/student">SDIBT</a>
+        </h1>
+
+        <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#doc-topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
+
+        <div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse">
+            <ul class="am-nav am-nav-pills am-topbar-nav">
+                <li class="am-active"><a href="#">首页</a></li>
+            </ul>
+            <div class="am-topbar-right">
+            <% if(student){ %>
+                <ul class="am-nav am-nav-pills am-topbar-nav">
+                    <li class=""><a href="#">欢迎您，<%= student.name%></a></li>
+                    <li class=""><a href="/logouts">注销</a></li>
+                    <!-- 链接触发器， href 属性为目标元素 ID -->
+                    <li><button class="am-btn am-btn-primary am-topbar-btn am-btn-sm" data-am-offcanvas="{target: '#doc-oc-demo1' }"><span class="am-icon-navicon"></span></button></li>
+                </ul>
+            <%}else{%>
+                <ul class="am-nav am-nav-pills am-topbar-nav">
+                    <li class=""><a href="/logins">登录</a></li>
+                    <li class=""><a href="/regs">注册</a></li>
+                </ul>
+            <%}%>
+            </div>
+        </div>
+    </header>
+    <% if (error) {%>
+        <script type="text/javascript">
+            alert("<%= error%>");
+        </script>
+    <% } %>
+    <% if (success) {%>
+        <div class="am-alert am-alert-success" style="width:30%; margin:0 auto;" data-am-alert>
+          <button type="button" class="am-close">&times;</button>
+          <p><%= success%></p>
+        </div>
+    <% } %>
+    <!-- 侧边栏内容 -->
+    <div id="doc-oc-demo1" class="am-offcanvas ">
+        <div class="am-offcanvas-bar am-offcanvas-bar-flip">
+            <div class="am-offcanvas-content">
+                <ul class="am-list admin-sidebar-list" id="collapase-nav-1" >
+                    <br><br><br><br><br>
+                    <li  class="am-panel" >
+                        <a  href="/student/settings"><i class="am-icon-cog am-margin-left-sm"></i> 个人设置</a>
+                    </li>
+                    <li class="am-panel">
+                        <a data-am-collapse="{parent: '#collapase-nav-1', target: '#user-nav'}">
+                            <i class="am-icon-users am-margin-left-sm"></i> 课程管理 <i class="am-icon-angle-right am-fr am-margin-right"></i>
+                        </a>
+                        <ul class="am-list am-collapse admin-sidebar-sub" id="user-nav">
+                            <li><a href="/student/selectCourse"><i class="am-icon-user am-margin-left-sm"></i> 添加课程 </a></li>
+                            <li><a href="/student/courseList"><i class="am-icon-user am-margin-left-sm"></i> 查看课程 </a></li>
+                        </ul>
+                    </li>
+                    
+
+                    <li class="am-panel">
+                        <a  href="/student/search"><i class="am-icon-chrome am-margin-left-sm"></i> 查询结果</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="am-g " >
+        <div class="am-u-md-8 am-u-md-centered content-setting">
+            <div data-am-tabs class="am-tabs">
+                <br>
+                <h1 style="text-align:center;"><i class="am-icon-cog am-margin-left-sm" style="color:rgb(133, 96, 140)"></i>&nbsp; 设置</h1><br>
+                <ul class="am-tabs-nav am-nav am-nav-tabs">
+                    <li class="am-active"><a href="[data-tab-panel-0]">基础设置</a></li>
+                    <li class=""><a href="[data-tab-panel-1]">修改密码</a></li>
+                    <!-- <li class=""><a href="[data-tab-panel-2]">歌唱</a></li> -->
+                </ul>
+                <div class="am-tabs-bd" style="overflow:hidden">
+                    <div data-tab-panel-0 class="am-tab-panel am-active">
+                        <form id="settings"  method="post" enctype="multipart/form-data">
+                            <div class="control-group" style="margin-left:25%; text-align:left">
+                                <div class="am-form-group">
+                                    <label for="doc-ds-ipt-1" >用户名</label>
+                                    <input type="text" id="doc-ds-ipt-1" class="am-form-field " style="width:60%; border-radius:5px;" value="<%= student.name%>" disabled placeholder="">
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="doc-ds-ipt-2" id="labelEmail" >电子邮箱</label><br>
+                                    <input type="email" id="doc-ds-ipt-2" class="am-form-field" form="settings"  maxlength="40" style="width:50%; border-radius:5px; display:inline-block;" name="settingEmail" value="<%= student.email%>" disabled="true"/>
+                                    <button type="button" class="am-btn am-btn-secondary am-radius" onclick="setEm()">修改</button>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="doc-ds-ipt-3" >姓名</label>
+                                    <input type="text" id="doc-ds-ipt-3" class="am-form-field " name="settingRealname" value="<%= student.realName%>" style="width:60%; border-radius:5px; disabled;" placeholder="请输入真实姓名">
+                                </div>
+                                <input type="text" name="settingTempPhoto" value="" hidden="true">
+                                <div class="am-form-group">
+                                    <p><strong>本人头像</strong></p>
+                                    <img class="am-circle am-img-thumbnail" alt="头像预览" src="/files/photos/<%= student.photo%>" width="200" height="200" style="display:inline-block"/>
+                                    <a href="#" id="aPhotoImg">
+                                        上传照片
+                                        <input type="file" id="photoImg" name="settingPhoto" value="上传照片" accept="image/jpeg,image/x-png"/>
+                                    </a>
+                                    <p style="color:rgb(124, 149, 122)">请上传本人头像（200x200）,以个人学号命名，如12171215.jpg(png.etc)，保存后可预览</p>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="doc-ds-ipt-8" id="labelEmail" >院系</label><br>
+                                    <input type="text" id="doc-ds-ipt-8" class="am-form-field input_faculty"  value="<%= student.dept%>" name="settingDept" list="note-faculty" maxlength="40" style="width:60%; border-radius:5px;" required="true"/>
+                                    <datalist id="note-faculty" style="display:none;">
+                                        <option value="计算机科学与技术学院">计算机科学与技术学院</option>
+                                        <option value="管理科学与工程学院">管理科学与工程学院</option>
+                                        <option value="工商管理学院">工商管理学院</option>
+                                        <option value="会计学院">会计学院</option>
+                                        <option value="公共管理学院">公共管理学院</option>
+                                        <option value="经济学院">经济学院</option>
+                                        <option value="金融学院">金融学院</option>
+                                        <option value="统计学院">统计学院</option>
+                                        <option value="法学院">法学院</option>
+                                        <option value="人文与传播学院">人文与传播学院</option>
+                                        <option value="外国语学院">外国语学院</option>
+                                        <option value="数学与信息科学学院">数学与信息科学学院</option>
+                                        <option value="信息与电子工程学院">信息与电子工程学院</option>
+                                        <option value="国际教育学院">国际教育学院</option>
+                                    </datalist>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="doc-ds-ipt-7" >专业</label>
+                                    <input type="text" id="doc-ds-ipt-7" class="am-form-field majorS" name="settingMajor" value="<%= student.majors%>" style="width:60%; border-radius:5px; disabled;" placeholder="请输入专业 如：计科-122">
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="doc-ds-ipt-9" >学号</label>
+                                    <input type="text" id="doc-ds-ipt-9" class="am-form-field no_idS" name="settingnoId" value="<%= student.no_id%>" style="width:60%; border-radius:5px; disabled;" placeholder="请输入学号 如：12171201">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div data-tab-panel-1 class="am-tab-panel ">
+                        <!-- <form id="settings"  method="post"> -->
+                            <div class="control-group" style="margin-left:25%; text-align:left">
+                                <br>
+                                <div class="am-form-group">
+                                    <label for="doc-ds-ipt-4" >当前密码</label>
+                                    <input type="password" id="doc-ds-ipt-4" class="am-form-field " form="settings" name="nowPass" style="width:60%; border-radius:5px;" placeholder="">
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="doc-ds-ipt-5">新密码</label>
+                                    <input type="password" id="doc-ds-ipt-5" class="am-form-field " form="settings" name="newPass" maxlength="15" style="width: 60%; border-radius:5px;" placeholder="请输入密码(6-15)">
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="doc-ds-ipt-6" >确认密码</label>
+                                    <input type="password" id="doc-ds-ipt-6" class="am-form-field " form="settings" name="passAgain"  maxlength="15" style="width:60%; border-radius:5px;" placeholder="请再次输入密码(6-15)">
+                                </div>
+                            </div>
+                        <!-- </form> -->
+                    </div>
+
+                    <button class="am-btn am-btn-secondary am-radius am-btn-lg" style="margin-left:26%;margin-bottom:5%" onclick="saveMethod()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer data-am-widget="footer"
+    class="am-footer am-footer-default"
+    data-am-footer="{  }" style="background:rgba(255, 255, 255, 0)">
+
+    <div class="am-footer-miscs ">
+
+        <p>由 <a href="http://www.crabx.site/" title="zerocode"
+            target="_blank" class="">zerocode</a>
+            提供技术支持</p>
+            <p>CopyRight©2015  crabx.kevin</p>
+        </div>
+    </footer>
+    <script type="text/javascript">
+    function saveMethod(){
+        var photo = document.getElementById("photoImg").files[0];
+        // console.log(photo);
+        var photoName = null;
+        if(photo != null || photo != undefined){
+            photoName = photo.name;
+            if(photo.type.indexOf("image") == -1){
+                alert("请选择图片文件，亲！");
+                return false;
+            }
+            var size = Math.floor(photo.size/1024);
+            if(size > 1000){
+                alert("这么大，要撑死宝宝了，请小于1M!");
+                return false;
+            }
+        }
+        var forms = document.getElementById("settings");
+        var NewPass = forms.newPass.value;
+        var PassAgain = forms.passAgain.value;
+        var NowPass = forms.nowPass.value;
+        var pattern1 = /^[\u4e00-\u9fa5]{2}\-[0-9]{3}$/;
+        var major = document.getElementsByClassName('majorS');
+        if(!pattern1.test(major[0].value)){
+            alert('你太调皮了，专业格式不对！');
+            return false;
+        }
+        var pattern2 = /^[0-9]{8}$/;
+        var no_id = document.getElementsByClassName('no_idS');
+        if(!pattern2.test(no_id[0].value)){
+            alert('学号格式不对，小傻瓜！');
+            return false;
+        }
+        if(NewPass != "" || PassAgain != ""){
+            if(NewPass != PassAgain){
+                alert("两次密码不一致，四不四傻!");
+                return false;
+            }
+            if (NewPass.length < 6) {
+                alert("密码长度至少6位!");
+                return false;
+            }
+            if(NowPass == ""){
+                alert("当前密码不能为空!");
+                return false;
+            }
+        }else if(NowPass != ""){
+            alert("新密码不能为空!");
+            return false;
+        }
+        forms.settingTempPhoto.value = photoName;
+        forms.submit();
+    }
+    function setEm(){
+        var Email = document.getElementById('labelEmail').control;
+        Email.disabled = false;
+    }
+    </script>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/amazeui.min.js"></script>
+    <script src="/assets/js/checkInfo.js"></script>
+</body>
+</html>
