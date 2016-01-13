@@ -71,8 +71,29 @@
             </div>
         </div>
     </div>
-    <div class="content" style="height:1000px;">
-
+    <div class="classlist-info">
+        <table class="am-table  am-table-bordered am-table-striped am-table-hover">
+            <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>姓名</th>
+                    <th>学号</th>
+                    <th>照片</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(var i = 0; i < courseStudents.length; i++) {%>
+                    <tr>
+                        <td><%= i+1%></td>
+                        <td><%= courseStudents[i].name%></td>
+                        <td><%= courseStudents[i].no_id%></td>
+                        <td><img style="width:40px;height:40px;"src="/files/photos/<%= courseStudents[i].photo%>" alt="" /></td>
+                        <td><a href="/teacher/ourStudents/remove/<%= course_id%>/<%= courseStudents[i].no_id%>">删除</a></td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
     </div>
     <footer data-am-widget="footer"
     class="am-footer am-footer-default"

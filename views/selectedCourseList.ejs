@@ -5,7 +5,7 @@
 <body>
     <header class="am-topbar am-topbar-inverse" >
         <h1 class="am-topbar-brand">
-            <a href="/teacher">SDIBT</a>
+            <a href="/student">SDIBT</a>
         </h1>
 
         <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#doc-topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
@@ -15,17 +15,17 @@
                 <li class="am-active"><a href="#">首页</a></li>
             </ul>
             <div class="am-topbar-right">
-            <% if(teacher){ %>
+            <% if(student){ %>
                 <ul class="am-nav am-nav-pills am-topbar-nav">
-                    <li class=""><a href="#">欢迎您，<%= teacher.name%></a></li>
-                    <li class=""><a href="/logoutt">注销</a></li>
+                    <li class=""><a href="#">欢迎您，<%= student.name%></a></li>
+                    <li class=""><a href="/logouts">注销</a></li>
                     <!-- 链接触发器， href 属性为目标元素 ID -->
-                    <li><button class="am-btn am-btn-primary am-topbar-btn am-btn-sm" data-am-offcanvas="{target: '#doc-oc-demo1'}"><span class="am-icon-navicon"></span></button></li>
+                    <li><button class="am-btn am-btn-primary am-topbar-btn am-btn-sm" data-am-offcanvas="{target: '#doc-oc-demo1',effect:'push'}"><span class="am-icon-navicon"></span></button></li>
                 </ul>
             <%}else{%>
                 <ul class="am-nav am-nav-pills am-topbar-nav">
-                    <li class=""><a href="/logint">登录</a></li>
-                    <li class=""><a href="/regt">注册</a></li>
+                    <li class=""><a href="/logins">登录</a></li>
+                    <li class=""><a href="/regs">注册</a></li>
                 </ul>
             <%}%>
             </div>
@@ -49,30 +49,48 @@
                 <ul class="am-list admin-sidebar-list" id="collapase-nav-1" >
                     <br><br><br><br><br>
                     <li  class="am-panel" >
-                        <a  href="/teacher/settings"><i class="am-icon-cog am-margin-left-sm"></i> 个人设置</a>
+                        <a  href="/student/settings"><i class="am-icon-cog am-margin-left-sm"></i> 个人设置</a>
+                    </li>
+                    <li class="am-panel">
+                        <a data-am-collapse="{parent: '#collapase-nav-1', target: '#user-nav'}">
+                            <i class="am-icon-users am-margin-left-sm"></i> 课程管理 <i class="am-icon-angle-right am-fr am-margin-right"></i>
+                        </a>
+                        <ul class="am-list am-collapse admin-sidebar-sub" id="user-nav">
+                            <li><a href="/student/selectCourse"><i class="am-icon-user am-margin-left-sm"></i> 添加课程 </a></li>
+                            <li><a href="/student/courseList"><i class="am-icon-user am-margin-left-sm"></i> 查看课程 </a></li>
+                        </ul>
                     </li>
 
                     <li class="am-panel">
-                        <a data-am-collapse="{parent: '#collapase-nav-1', target: '#user-nav'}">
-                            <i class="am-icon-users am-margin-left-sm"></i> 管理班级 <i class="am-icon-angle-right am-fr am-margin-right"></i>
-                        </a>
-                        <ul class="am-list am-collapse admin-sidebar-sub" id="user-nav">
-                            <li><a href="/teacher/addclass"><i class="am-icon-user am-margin-left-sm"></i> 添加班级 </a></li>
-                            <li><a href="/teacher/classlist"><i class="am-icon-user am-margin-left-sm"></i> 班级列表 </a></li>
-                        </ul>
-                    </li>
-                    <li  class="am-panel" >
-                        <a  href="/teacher/callroll"><i class="am-icon-bomb am-margin-left-sm"></i> 开始点名</a>
-                    </li>
-                    <li class="am-panel">
-                        <a  href="/teacher/searchlist"><i class="am-icon-chrome am-margin-left-sm"></i> 查询结果</a>
+                        <a  href="/student/search"><i class="am-icon-chrome am-margin-left-sm"></i> 查询结果</a>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
-    <div class="content" style="height:1000px;">
+    <div class="classlist-info">
+        <table class="am-table  am-table-bordered am-table-striped am-table-hover">
+            <thead>
+                <tr>
+                    <th>院系</th>
+                    <th>专业班级</th>
+                    <th>课程名称</th>
+                    <th>学时</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(var i = 0; i < classes.length; i++) {%>
+                    <tr>
+                        <td><%= classes[i].course_dept%></td>
+                        <td><%= classes[i].course_major%></td>
+                        <td><%= classes[i].course_name%></td>
+                        <td><%= classes[i].course_period%></td>
+                    </tr>
+                <% } %>
 
+
+            </tbody>
+        </table>
     </div>
     <footer data-am-widget="footer"
     class="am-footer am-footer-default"

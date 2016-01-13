@@ -97,6 +97,26 @@ Course.getAll = function(name,callback){
     });
 };
 
+Course.seeStudent = function(_id,callback){
+    pool.acquire(function(err,mongodb){
+        if(err){
+            return callback(err);
+        }
+        mongodb.collection('course', function(err,collection){
+            if(err){
+                pool.release(mongodb);
+                return callback(err);
+            }
+            collection.findOne({'_id': new ObjectID(_id)},function(err,doc){
+                pool.release(mongodb);
+                if (err) {
+                    return callback(err);
+                }
+                callback(null,doc);
+            });
+        });
+    });
+};
 Course.remove = function(_id,callback){
     pool.acquire(function(err,mongodb){
         if (err) {
@@ -110,6 +130,81 @@ Course.remove = function(_id,callback){
             collection.remove({
                 '_id': new ObjectID(_id)
             },{w:1},function(err){
+                pool.release(mongodb);
+                if(err){
+                    return callback(err);
+                }
+                callback(null);
+            });
+        });
+    });
+};
+Course.update = function(name,major,student,callback){
+    pool.acquire(function(err,mongodb){
+        if (err) {
+            return callback(err);
+        }
+        mongodb.collection('course', function(err,collection){
+            if(err){
+                pool.release(mongodb);
+                return callback(err);
+            }
+            collection.update({
+                'course_name': name,
+                'course_major': major
+            },{
+                $push:{'course_students': student}
+            }, function(err){
+                pool.release(mongodb);
+                if (err) {
+                    return callback(err);
+                }
+                callback(null);
+            });
+        });
+    });
+};
+Course.getStuCourse = function(no_id,callback){
+    pool.acquire(function(err,mongodb){
+        if (err) {
+            return callback(err);
+        }
+        mongodb.collection('course', function(err,collection){
+            if(err){
+                pool.release(mongodb);
+                return callback(err);
+            }
+            collection.find({
+                "course_students":{"$elemMatch":{"no_id":no_id}}
+            }).sort({course_time:-1}).toArray(function(err,docs){
+                pool.release(mongodb);
+                if(err){
+                    return callback(err);
+                }
+                callback(null,docs);
+            });
+        });
+    });
+};
+Course.removeStudent = function(no_id,course_id,callback){
+    pool.acquire(function(err,mongodb){
+        if (err) {
+            return callback(err);
+        }
+        mongodb.collection('course',function(err,collection){
+            if(err){
+                pool.release(mongodb);
+                return callback(err);
+            }
+            collection.update({
+                '_id': new ObjectID(course_id)
+            },{
+                "$pull":{
+                    "course_students": {
+                         "no_id": no_id
+                    }
+                }
+            },function(err){
                  pool.release(mongodb);
                  if(err){
                      return callback(err);
@@ -119,4 +214,3 @@ Course.remove = function(_id,callback){
         });
     });
 };
-
