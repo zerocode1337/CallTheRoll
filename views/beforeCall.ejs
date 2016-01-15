@@ -77,33 +77,21 @@
             </div>
         </div>
     </div>
-    <div class="classlist-info">
-        <table class="am-table  am-table-bordered am-table-striped am-table-hover">
-            <thead>
-                <tr>
-                    <th>编号</th>
-                    <th>院系</th>
-                    <th>专业班级</th>
-                    <th>课程名称</th>
-                    <th>学时</th>
-                    <th>操作</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% for(var i = 0; i < classes.length; i++) {%>
-                    <tr>
-                        <td><%= i+1%></td>
-                        <td><%= classes[i].course_dept%></td>
-                        <td><%= classes[i].course_major%></td>
-                        <td><%= classes[i].course_name%></td>
-                        <td><%= classes[i].course_period%></td>
-                        <td><a href="/teacher/classlist/remove/<%= classes[i]._id%>">删除</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="/teacher/classlist/see/<%= classes[i]._id%>">查看</a></td>
-                    </tr>
-                <% } %>
-
-
-            </tbody>
-        </table>
+    <div class="courseadd">
+        <% for(var i = 0; i < classes.length; i++){%>
+            <a href="#" id="WoShiRongQi">
+                <div class="am-panel am-panel-default courseList" id="id_<%= i%>" data-am-popover="{content: '我是<%= classes[i].course_major%>，Are You Ready?', trigger: 'hover focus'}" data-am-scrollspy="{animation: 'scale-up'}"><br>
+                    <header class="am-panel-hd">
+                        <h3 class="am-panel-title" style="font-size:1.5em"><%= classes[i].course_name%></h3>
+                    </header>
+                    <div class="am-panel-bd">
+                        院系：<span><%= classes[i].course_dept%></span> <br><br>
+                        专业班级：<span><%= classes[i].course_major%></span> <br><br>
+                        任课老师：<span><%= classes[i].course_teacher%></span><br><br>
+                    </div>
+                </div>
+            </a>
+        <% } %>
     </div>
 
     <footer data-am-widget="footer"

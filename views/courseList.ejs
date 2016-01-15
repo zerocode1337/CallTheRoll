@@ -70,7 +70,7 @@
     </div>
     <div class="courseadd">
         <% for(var i = 0; i < classes.length; i++){%>
-        <div class="am-panel am-panel-default courseList" id="id_<%= i%>" data-am-popover="{content: '我就不提醒你仔细看，哼！', trigger: 'hover focus'}" data-am-scrollspy="{animation: 'fade', delay: <%=i*150%>}"><br>
+        <div class="am-panel am-panel-default courseList" id="id_<%= i%>" data-am-popover="{content: '哇，我是<%= classes[i].course_name%>,我就不提醒你仔细看，哼！', trigger: 'hover focus'}" data-am-scrollspy="{animation: 'scale-up', delay: <%=i*150%>}"><br>
             <header class="am-panel-hd">
                 <h3 class="am-panel-title" style="font-size:1.5em"><%= classes[i].course_name%></h3>
             </header>

@@ -476,6 +476,23 @@ module.exports = function(app){
             });
         });
     });
+    app.get('/teacher/callroll', checkLogin);
+    app.get('/teacher/callroll', function(req,res,next){
+        Course.getAll(req.session.teacher.realName, function(err,docs){
+            if (err) {
+                docs = [];
+                req.flash('error',err);
+                return res.redirect('/');
+            }
+            res.render('beforeCall', {
+                title: '班级列表',
+                classes: docs,
+                teacher: req.session.teacher,
+                success: req.flash('success').toString(),
+                error: req.flash('error').toString()
+            });
+        });
+    });
     app.get('/getCaptcha', function(req,res,next){
         //设置验证码样式
         var captcha = ccap({
