@@ -36,12 +36,13 @@
     display: inline-block;
     width: 20%;
     border: 1px solid rgb(238, 238, 238);
-    background-color: rgba(217, 217, 217, 0.22);
+    /*background: rgb(16, 251, 244);*/
+    background-color: rgba(217, 217, 217, 0.1);
     border-radius: 15px;
-    margin: 30px;
-    padding: 30px;
+    margin: 40px;
+    padding: 5px 30px 10px;
     text-align: left;
 }
 .courseList:hover{
-    background: rgba(191, 199, 237, 0.32);
+    background: rgba(191, 199, 237, 0.9);
 }

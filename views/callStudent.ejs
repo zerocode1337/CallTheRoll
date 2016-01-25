@@ -1,0 +1,140 @@
+<%- include header%>
+<link rel="stylesheet" href="/assets/css/checkInfo.css" media="screen" title="no title" charset="utf-8">
+<link rel="stylesheet" href="/assets/css/definedstyle.css" media="screen" title="no title" charset="utf-8">
+<style media="screen">
+/**{margin:0;padding:0;}*/
+body{
+    background: rgb(245, 245, 245);
+}
+li{list-style:none;}
+img{display:block;border:0 none;width: 200px; height:200px;}
+.clearfix{*zoom:1;}
+.clearfix:after{clear:both;content:'';display:block;height:0;visibility:hidden;}
+.main{margin:10% auto;width:80%;}
+.main li{margin-bottom: 220px;display:inline-block;*display:inline;*zoom:1;float:left;width:20%;perspective:500;-webkit-perspective:500;transform-style:preserve-3d;-webkit-transform-style:preserve-3d;transition-duration:0.5s;-webkit-transition-duration:0.5s;-moz-transition-duration:0.5s;-o-transition-duration:0.5s;-ms-transition-duration:0.5s;}
+.main li img{border:5px solid #fff;box-shadow:0 3px 10px #888;transform:rotateY(15deg);-webkit-transform:rotateY(15deg);-moz-transform:rotateY(15deg);-o-transform:rotateY(15deg);-ms-transform:rotateY(15deg);transition-duration:0.5s;-webkit-transition-duration:0.5s;-moz-transition-duration:0.5s;-o-transition-duration:0.5s;-ms-transition-duration:0.5s;}
+.info{border:5px solid #fff;background:#deddcd;box-shadow:0 20px 40px #888;margin:-30px 0 0 60px;position:absolute;width:150px;transform:rotateY(15deg) translateZ(15px);-webkit-transform:rotateY(15deg) translateZ(15px);-moz-transform:rotateY(15deg) translateZ(15px);-o-transform:rotateY(15deg) translateZ(15px);-ms-transform:rotateY(15deg) translateZ(15px);transition-duration:0.5s;-moz-transition-duration:0.5s;-moz-transition-duration:0.5s;-o-transition-duration:0.5s;-ms-transition-duration:0.5s;}
+.info h2{color:#7a3f3a;font-size:14px;text-align:center;padding:15px 0px 0px 0px;}
+.main li:hover img{transform:rotateY(0deg);-webkit-transform:rotateY(0deg);-moz-transform:rotateY(0deg);-o-transform:rotateY(0deg);-ms-transform:rotateY(0deg);}
+.main li:hover .info{box-shadow:0 5px 10px #888;transform:rotateY(0deg);-webkit-transform:rotateY(0deg);-moz-transform:rotateY(0deg);-o-transform:rotateY(0deg);-ms-transform:rotateY(0deg);margin:-35px 0 0 55px;}
+</style>
+</head>
+<body>
+    <header class="am-topbar am-topbar-inverse" >
+        <h1 class="am-topbar-brand">
+            <a href="/teacher">SDIBT</a>
+        </h1>
+
+        <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#doc-topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
+
+        <div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse">
+            <ul class="am-nav am-nav-pills am-topbar-nav">
+                <li class="am-active"><a href="#">首页</a></li>
+            </ul>
+            <div class="am-topbar-right">
+            <% if(teacher){ %>
+                <ul class="am-nav am-nav-pills am-topbar-nav">
+                    <li class=""><a href="#">欢迎您，<%= teacher.name%></a></li>
+                    <li class=""><a href="/logoutt">注销</a></li>
+                    <!-- 链接触发器， href 属性为目标元素 ID -->
+                    <li><button class="am-btn am-btn-primary am-topbar-btn am-btn-sm" data-am-offcanvas="{target: '#doc-oc-demo1'}"><span class="am-icon-navicon"></span></button></li>
+                </ul>
+            <%}else{%>
+                <ul class="am-nav am-nav-pills am-topbar-nav">
+                    <li class=""><a href="/logint">登录</a></li>
+                    <li class=""><a href="/regt">注册</a></li>
+                </ul>
+            <%}%>
+            </div>
+        </div>
+    </header>
+    <% if (error) {%>
+        <script type="text/javascript">
+            alert("<%= error%>");
+        </script>
+    <% } %>
+    <% if (success) {%>
+        <div class="am-alert am-alert-success" style="width:30%; margin:0 auto;" data-am-alert>
+          <button type="button" class="am-close">&times;</button>
+          <p><%= success%></p>
+        </div>
+    <% } %>
+    <!-- 侧边栏内容 -->
+    <div id="doc-oc-demo1" class="am-offcanvas ">
+        <div class="am-offcanvas-bar am-offcanvas-bar-flip">
+            <div class="am-offcanvas-content">
+                <ul class="am-list admin-sidebar-list" id="collapase-nav-1" >
+                    <br><br><br><br><br>
+                    <li  class="am-panel" >
+                        <a  href="/teacher/settings"><i class="am-icon-cog am-margin-left-sm"></i> 个人设置</a>
+                    </li>
+
+                    <li class="am-panel">
+                        <a data-am-collapse="{parent: '#collapase-nav-1', target: '#user-nav'}">
+                            <i class="am-icon-users am-margin-left-sm"></i> 管理班级 <i class="am-icon-angle-right am-fr am-margin-right"></i>
+                        </a>
+                        <ul class="am-list am-collapse admin-sidebar-sub" id="user-nav">
+                            <li><a href="/teacher/addclass"><i class="am-icon-user am-margin-left-sm"></i> 添加班级 </a></li>
+                            <li><a href="/teacher/classlist"><i class="am-icon-user am-margin-left-sm"></i> 班级列表 </a></li>
+                        </ul>
+                    </li>
+                    <li  class="am-panel" >
+                        <a  href="/teacher/callroll"><i class="am-icon-bomb am-margin-left-sm"></i> 开始点名</a>
+                    </li>
+                    <li class="am-panel">
+                        <a  href="/teacher/searchlist"><i class="am-icon-chrome am-margin-left-sm"></i> 查询结果</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <form class="am-form" data-am-validator method="post">
+            <ul class="main clearfix">
+                <% for(var i = 0; i < courseStudents.length; i++) {%>
+                <div data-am-scrollspy="{animation: 'scale-up'}">
+                    <li>
+                        <img src="/files/photos/<%= courseStudents[i].photo%>" width="200" height="200" alt=""/>
+                        <div class="info">
+                            <h2>Information</h2>
+                            <span>姓名</span>: <%= courseStudents[i].name%><br>
+                            <span>学号</span>: <%= courseStudents[i].no_id%>
+                              <label class="am-radio-inline">
+                                <input type="radio" name="radios<%= i+1%>" value="yes" data-am-ucheck checked> 到课
+                              </label>
+                              <label class="am-radio-inline">
+                                <input type="radio" name="radios<%= i+1%>" value="no" data-am-ucheck> 旷课
+                              </label>
+                              <label class="am-radio-inline">
+                                <input type="radio" name="radios<%= i+1%>" value="leaving" data-am-ucheck> 请假
+                              </label>
+                              <label class="am-radio-inline">
+                                <input type="radio" name="radios<%= i+1%>" value="late" data-am-ucheck> 迟到
+                              </label>
+                        </div>
+                    </li>
+                </div>
+                <% } %>
+            </ul>
+            <button type="submit" class="am-btn am-btn am-btn-primary am-btn-block am-btn-primary" style="width:20%; margin-left:40%">提交</button>
+        </form>
+    </div>
+    <hr>
+    <footer data-am-widget="footer"
+    class="am-footer am-footer-default"
+    data-am-footer="{  }" style="background:rgba(255, 255, 255, 0)">
+
+    <div class="am-footer-miscs ">
+
+        <p>由 <a href="http://www.crabx.site/" title="zerocode"
+            target="_blank" class="">zerocode1337</a>
+            提供技术支持</p>
+            <p>CopyRight©2015  crabx.kevin</p>
+        </div>
+    </footer>
+
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/amazeui.min.js"></script>
+    <script src="/assets/js/checkInfo.js"></script>
+</body>
+</html>

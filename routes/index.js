@@ -450,7 +450,7 @@ module.exports = function(app){
         Course.seeStudent(req.params.id, function(err,doc){
             if (err) {
                 req.flash('error',err);
-                res.redirect('back');
+                return res.redirect('back');
             }
             var stus = [];
             for (var i=0; i < doc.course_students.length; ++i) {
@@ -465,7 +465,6 @@ module.exports = function(app){
                 }
                 return 0;
             });
-            console.log(stus);
             res.render('showStudents', {
                 title: '学生列表',
                 courseStudents: stus,
@@ -492,6 +491,52 @@ module.exports = function(app){
                 error: req.flash('error').toString()
             });
         });
+    });
+    app.get('/teacher/callroll/:courseId', checkLogin);
+    app.get('/teacher/callroll/:courseId', function(req,res,next){
+        Course.seeStudent(req.params.courseId, function(err,doc){
+            if (err) {
+                req.flash('error',err);
+                return res.redirect('back');
+            }
+            var stus = [];
+            for(var i = 0; i < doc.course_students.length; i++){
+                stus[i] = doc.course_students[i];
+            }
+            stus.sort(function(s1,s2){
+                if(s1.no_id < s2.no_id){
+                     return -1;
+                }
+                if(s1.no_id > s2.no_id){
+                     return 1;
+                }
+                return 0;
+            });
+            res.render('callStudent',{
+                title: '点名',
+                teacher: req.session.teacher,
+                courseStudents: stus,
+                course: doc,
+                success: req.flash('success').toString(),
+                error: req.flash('error').toString()
+            });
+        });
+    });
+    app.post('/teacher/callroll/:courseId', checkLogin);
+    app.post('/teacher/callroll/:courseId', function(req,res,next){
+        if(!req.body.radios1){
+            req.flash('error',"当前班级没有学生！");
+            return res.redirect('/teacher');
+        }
+        var a = req.body.radios1;
+        var b = req.body.radios2;
+        var c = req.body.radios3;
+        console.log(a+b+c);
+        var s = [];
+        for(var i = 1; i <= 3; i++){
+            s[i] = req.body["radios"+i];
+            console.log(s[i]);
+        }
     });
     app.get('/getCaptcha', function(req,res,next){
         //设置验证码样式
