@@ -320,12 +320,9 @@ module.exports = function(app){
         var password = req.params.pass;
         var course = req.session.course;
         var tempCourse = course[indexNum];
-        var student = new Object();
-        student.name = req.session.student.realName;
-        student.no_id = req.session.student.no_id;
-        student.photo = req.session.student.photo;
+        var student_id = req.session.student._id;
         if(password == tempCourse.course_password){
-            Course.getStuCourse(student.no_id,function(err,doc){
+            Course.getStuCourse(student_id,function(err,doc){
                 if(err){
                     doc = [];
                     req.flash('error',err);
@@ -342,11 +339,17 @@ module.exports = function(app){
                     req.flash('error','亲，别作死哦，你选过我了！');
                     return res.redirect('back');
                 }else{
-                    Course.update(tempCourse.course_name,tempCourse.course_major,student,function(err){
+                    Course.update(tempCourse.course_name,tempCourse.course_major,student_id,function(err){
                         if (err) {
                             req.flash('error',err);
                             return res.redirect('back');
                         }
+                        Student.addCourse(tempCourse._id,student_id,function(err){
+                            if(err){
+                                req.flash('error',err);
+                                return res.redirect('back');
+                            }
+                        });
                         req.flash('success','选课成功！');
                         return res.redirect('/student/courseList');
                     });
@@ -359,7 +362,7 @@ module.exports = function(app){
     });
     app.get('/student/courseList', checkLoginStudent);
     app.get('/student/courseList', function(req,res,next){
-        Course.getStuCourse(req.session.student.no_id, function(err,docs){
+        Course.getStuCourse(req.session.student._id, function(err,docs){
             if(err){
                 docs = [];
                 req.flash('error',err);
@@ -430,8 +433,14 @@ module.exports = function(app){
                 req.flash('error',err);
                 res.redirect('back');
             }
+            Student.removeAllCourse(req.params.id,function(err){
+                if(err){
+                    req.flash('error',err);
+                    res.redirect('back');
+                }
+            });
             req.flash('success','删除成功！');
-            res.redirect('/teacher/classlist');
+            return res.redirect('/teacher/classlist');
         });
     });
     app.get('/teacher/ourStudents/remove/:course_id/:id', checkLogin);
@@ -441,38 +450,52 @@ module.exports = function(app){
                 req.flash('error',err);
                 res.redirect('back');
             }
+            Student.removeOneCourse(req.params.course_id,req.params.id,function(err){
+                if(err){
+                    req.flash('error',err);
+                    res.redirect('back');
+                }
+            });
             req.flash('success','删除成功！');
             res.redirect('back');
         });
     });
     app.get('/teacher/classlist/see/:id', checkLogin);
     app.get('/teacher/classlist/see/:id', function(req,res,next){
-        Course.seeStudent(req.params.id, function(err,doc){
+        Student.findCourse(req.params.id, function(err,doc){
             if (err) {
                 req.flash('error',err);
                 return res.redirect('back');
             }
-            var stus = [];
-            for (var i=0; i < doc.course_students.length; ++i) {
-                stus[i] = doc.course_students[i];
-            }
-            stus.sort(function(s1,s2){
-                if(s1.no_id < s2.no_id){
-                    return -1;
-                }
-                if(s1.no_id > s2.no_id){
-                    return 1;
-                }
-                return 0;
-            });
             res.render('showStudents', {
                 title: '学生列表',
-                courseStudents: stus,
+                courseStudents: doc,
                 course_id: req.params.id,
                 teacher: req.session.teacher,
                 success: req.flash('success').toString(),
                 error: req.flash('error').toString()
             });
+            //var stus = [];
+            //for (var i=0; i < doc.course_students.length; ++i) {
+            //    stus[i] = doc.course_students[i];
+            //}
+            //stus.sort(function(s1,s2){
+            //    if(s1.no_id < s2.no_id){
+            //        return -1;
+            //    }
+            //    if(s1.no_id > s2.no_id){
+            //        return 1;
+            //    }
+            //    return 0;
+            //});
+            //res.render('showStudents', {
+            //    title: '学生列表',
+            //    courseStudents: stus,
+            //    course_id: req.params.id,
+            //    teacher: req.session.teacher,
+            //    success: req.flash('success').toString(),
+            //    error: req.flash('error').toString()
+            //});
         });
     });
     app.get('/teacher/callroll', checkLogin);
@@ -494,29 +517,15 @@ module.exports = function(app){
     });
     app.get('/teacher/callroll/:courseId', checkLogin);
     app.get('/teacher/callroll/:courseId', function(req,res,next){
-        Course.seeStudent(req.params.courseId, function(err,doc){
+        Student.findCourse(req.params.courseId, function(err,doc){
             if (err) {
                 req.flash('error',err);
                 return res.redirect('back');
             }
-            var stus = [];
-            for(var i = 0; i < doc.course_students.length; i++){
-                stus[i] = doc.course_students[i];
-            }
-            stus.sort(function(s1,s2){
-                if(s1.no_id < s2.no_id){
-                     return -1;
-                }
-                if(s1.no_id > s2.no_id){
-                     return 1;
-                }
-                return 0;
-            });
             res.render('callStudent',{
                 title: '点名',
                 teacher: req.session.teacher,
-                courseStudents: stus,
-                course: doc,
+                courseStudents: doc,
                 success: req.flash('success').toString(),
                 error: req.flash('error').toString()
             });

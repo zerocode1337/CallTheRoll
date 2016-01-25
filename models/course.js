@@ -175,7 +175,7 @@ Course.getStuCourse = function(no_id,callback){
                 return callback(err);
             }
             collection.find({
-                "course_students":{"$elemMatch":{"no_id":no_id}}
+                "course_students":no_id
             }).sort({course_time:-1}).toArray(function(err,docs){
                 pool.release(mongodb);
                 if(err){
@@ -200,9 +200,7 @@ Course.removeStudent = function(no_id,course_id,callback){
                 '_id': new ObjectID(course_id)
             },{
                 "$pull":{
-                    "course_students": {
-                         "no_id": no_id
-                    }
+                    "course_students":no_id
                 }
             },function(err){
                  pool.release(mongodb);

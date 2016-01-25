@@ -86,10 +86,10 @@
                 <% for(var i = 0; i < courseStudents.length; i++) {%>
                     <tr>
                         <td><%= i+1%></td>
-                        <td><%= courseStudents[i].name%></td>
+                        <td><%= courseStudents[i].realName%></td>
                         <td><%= courseStudents[i].no_id%></td>
                         <td><img style="width:40px;height:40px;"src="/files/photos/<%= courseStudents[i].photo%>" alt="" /></td>
-                        <td><a href="/teacher/ourStudents/remove/<%= course_id%>/<%= courseStudents[i].no_id%>">删除</a></td>
+                        <td><a href="/teacher/ourStudents/remove/<%= course_id%>/<%= courseStudents[i]._id%>">删除</a></td>
                     </tr>
                 <% } %>
             </tbody>
